@@ -1,2 +1,3 @@
 # VotingSystem
-Voting system project for University of Koblenz
+
+Voting system project of University of Koblenz by team Yankee

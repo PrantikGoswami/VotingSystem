@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"  xmlns:h="http://java.sun.com/jsf/html"  xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head> 
+    <title>Poll List</title>
+    <style type="text/css">
+        .tableUpdated {
+        	width: 90% !important;
+        	margin: 17px 58px 0 !important;
+        }
+        .btnSpace {
+        	margin: 17px;
+        }     
+    </style>
+</h:head>
+<h:body>
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:define name="top">
+            <f:metadata>
+        <f:viewAction action="#{personBean.login}" />
+    </f:metadata>
+    <h3> Welcome: <span style="color:green"> #{personBean.email} </span></h3>
+        </ui:define>
+        <ui:define name="content">
+        
+    <center><h2><h:outputText value="Poll Records"/></h2></center>
+    <h:form id="pollForm">
+        <h:dataTable id="pollTable" binding="#{table}" value="#{personBean.pollList}" var="poll" styleClass="table table-striped table-bordered tableUpdated">
+            <h:column>
+                <f:facet name="header">Id</f:facet>
+                <h:outputText value="#{poll.id}" />                
+            </h:column>
+            <h:column>
+                <f:facet name="header">Email</f:facet>
+                <h:outputText value="#{poll.organizerEmail}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">Title</f:facet>
+                <h:outputText value="#{poll.pollTitle}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">Status</f:facet>
+                <h:outputText value="#{poll.state}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">Start Date</f:facet>
+                <h:outputText value="#{poll.pollingStartDate}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">End Date</f:facet>
+                <h:outputText value="#{poll.pollingEndDate}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">Submitted Votes</f:facet>
+                <h:outputText value="#{poll.submittedVotes}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">Status</f:facet>
+                <h:commandButton rendered="#{poll.state == 'PREPARED'}" action="#{personBean.startPoll(poll)}" value="Start Poll" styleClass="btn btn-primary">
+                </h:commandButton>
+                <h:commandButton rendered="#{poll.state == 'FINISHED'}" action="#{personBean.calculatePoll(poll)}" value="Calculate" styleClass="btn btn-primary">
+                </h:commandButton>
+            </h:column>
+        </h:dataTable>
+        <center><h:commandButton action="#{personBean.addPoll()}" value="Create New Poll" styleClass="btn btn-success btnSpace" /></center>
+    </h:form>
+        </ui:define>     
+    </ui:composition>
+</h:body>
+</html>

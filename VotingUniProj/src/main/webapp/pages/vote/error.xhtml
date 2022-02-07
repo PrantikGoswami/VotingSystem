@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" http-equiv="X-UA-Conpatible" />
+    <h:outputStylesheet library="css" name="bootstrap.min.css" />
+    <title>error</title>
+    <style type="text/css">
+        .btnWidth {
+            width: 80px;
+        }     
+        .col-sm-updated {        	
+    		padding-top: 7px;    		
+        }
+         .col-sm-updated a {
+         	margin-left: 30px;
+        	text-decoration: none !important;
+        }
+        .col-sm-27 {
+        	width: 27% !important	;
+        }
+    </style>
+</h:head>
+<h:body>
+    <center><h2><h:outputText rendered="true" style="color: red;" value="#{personBean.errorMessage}"/></h2></center>
+</h:body>
+</html>

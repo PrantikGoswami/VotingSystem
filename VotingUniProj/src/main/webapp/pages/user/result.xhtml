@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"  xmlns:h="http://java.sun.com/jsf/html"  xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" http-equiv="X-UA-Conpatible" />
+        <h:outputStylesheet library="css" name="bootstrap.min.css" />     
+        <title>Poll Result</title>
+        <style type="text/css">
+            .tableUpdated {
+                width: 90% !important;
+                margin: 17px 58px 0 !important;
+            }
+            .btnSpace {
+                margin: 17px;
+            }
+            .fotterPannel td{
+                width: 59.7%;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/template.xhtml">
+            <ui:define name="top">
+                <center><h2><h:outputText value="Poll Result"/></h2></center>
+            </ui:define>
+            <ui:define name="content">
+                <h:form id="pollResultForm">
+                    <ui:repeat value="#{personBean.resultPoll.questions}" var="question">
+                        <div class="form-group">
+                            <h:outputLabel styleClass="control-label col-sm-3">Question Title :</h:outputLabel>
+                            <div class="col-sm-3">
+                                <h:outputText value="#{question.title}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h:outputLabel styleClass="control-label col-sm-3">Result Mode :</h:outputLabel>
+                            <div class="col-sm-3">
+                                <h:outputText value="#{question.mode}" />
+                            </div>
+                        </div>
+
+                        <h:dataTable id="pollResultTable" value="#{question.options}" var="option" styleClass="table table-striped table-bordered tableUpdated">
+                            <h:column>
+                                <f:facet name="header">Title</f:facet>
+                                <h:outputText value="#{option.name}" />                
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Votes</f:facet>
+                                <h:outputText value="#{option.votes}" />
+                            </h:column>
+                            <f:facet name="footer">
+                                <h:panelGrid columns="2" cellpadding="0" cellspacing="2" styleClass="table table-striped table-bordered fotterPannel" style="margin: -9px ">
+                                    <h:outputText value="Abstentions" style="width: 59.7%;"/>
+                                    <h:outputText value="#{question.abstentions==null?0:question.abstentions}" />
+                                    <h:outputText value="Total:" />
+                                    <h:outputText value="#{personBean.resultPoll.submittedVotes}" />
+                                </h:panelGrid>
+                            </f:facet>
+                        </h:dataTable>
+                    </ui:repeat>
+                    <div class="col-sm-updated bottom-right" style="display: inline-block"><h:outputLink value="dashboard.xhtml" style="margin-right: 20px;">Cancel</h:outputLink></div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

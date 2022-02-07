@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" http-equiv="X-UA-Conpatible" />
+        <h:outputStylesheet library="css" name="bootstrap.min.css" />
+        <title>Create New Poll</title>
+        <style type="text/css">
+            .btnWidth {
+                width: 80px;
+            }     
+            .col-sm-updated {        	
+                padding-top: 7px;    		
+            }
+            .col-sm-updated a {
+                margin-left: 30px;
+                text-decoration: none !important;
+            }
+            .col-sm-27 {
+                width: 27% !important	;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/template.xhtml">
+            <ui:define name="top">
+                <!--<h3> Logged in user: <span style="color:green"> {personBean.email} </span></h3>-->
+                <center><h2><h:outputText value="Create Poll Record"/></h2></center>
+            </ui:define>
+            <ui:define name="content">
+                <h:form id="newPollForm" styleClass="form-horizontal">        
+                    <div class="form-group">
+                        <h:outputLabel for="orgEmail" styleClass="control-label col-sm-4">Organizer Email:</h:outputLabel>
+                        <div class="col-sm-4"><h:outputText id="orgEmail" value="#{personBean.currentPoll.organizerEmail}" styleClass="text text-success" /></div>
+                    </div>
+                    <div class="form-group">
+                        <h:outputLabel for="pollTitle" styleClass="control-label col-sm-4">Poll Title:</h:outputLabel>
+                        <div class="col-sm-4">
+                            <h:inputText id="pollTitle" value="#{personBean.currentPoll.pollTitle}" styleClass="form-control" required="true" requiredMessage="Poll title required" />
+                        </div>
+                        <h:message for="pollTitle" styleClass="text text-danger" />
+                    </div>
+                    <div class="form-group">
+                        <h:outputLabel for="pollDesc" styleClass="control-label col-sm-4">Poll Description:</h:outputLabel>
+                        <div class="col-sm-4">
+                            <h:inputTextarea id="pollDesc" value="#{personBean.currentPoll.pollDescription}" styleClass="form-control" required="true" requiredMessage="Poll Description required" />
+                        </div>
+                        <h:message for="pollDesc" styleClass="text text-danger" />
+                    </div>
+                    <div class="form-group">
+                        <h:outputLabel for="startDate" styleClass="control-label col-sm-4">Start Date(dd-mm-yyyy):</h:outputLabel>
+                        <div class="col-sm-4">
+                            <h:inputText id="startDate" value="#{personBean.currentPoll.pollingStartDate}" styleClass="form-control" required="true" requiredMessage="Start date is required(dd-mm-yyyy)">
+                                <f:convertDateTime locale="en_US" timeZone="EDT" pattern="dd-MM-yyyy"/>
+                            </h:inputText>
+                        </div>
+                        <h:message for="startDate" styleClass="text text-danger" />
+                    </div>
+                    <div class="form-group">
+                        <h:outputLabel for="endDate" styleClass="control-label col-sm-4">End Date(dd-mm-yyyy):</h:outputLabel>
+                        <div class="col-sm-4">
+                            <h:inputText id="endDate" value="#{personBean.currentPoll.pollingEndDate}" styleClass="form-control" required="true" requiredMessage="End Date is required(dd-mm-yyyy)">
+                                <f:convertDateTime pattern="dd-MM-yyyy"/>
+                            </h:inputText>
+                        </div>
+                        <h:message for="endDate" styleClass="text text-danger" />
+                    </div>
+                    <div class="form-group">
+                        <h:outputLabel for="groupNames" styleClass="control-label col-sm-4">Select Group:</h:outputLabel>
+                        <div class="col-sm-4">
+                            <h:selectManyListbox id="groupNames" value="#{personBean.selectedGroups}" styleClass="form-control" style="max-height: 100px !important;">
+                                <f:selectItems value="#{personBean.availableGroups}" var="group" itemValue="#{group.groupName}" itemLabel="#{group.groupName}" />
+                            </h:selectManyListbox>
+                        </div>
+                        <h:message for="groupNames" styleClass="text text-danger" />
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 col-sm-27" />
+                        <div class="col-sm-4">
+                            <div class="col-sm-2" style="width: 50% !important">
+                                <h:commandButton rendered="true" value="Add Question" action="#{personBean.addQuestion}" styleClass="btn btn-success btnWidth" style="width: 100% !important"></h:commandButton>
+                            </div>
+                            <div class="col-sm-1" />
+                        </div>
+                    </div>
+                    <ui:repeat value="#{personBean.questions}" var="question">
+                        <div style="width: 80%; border: 1px solid lightblue; padding-top: 10px; padding-bottom: 10px; margin-top: 10px; margin-left: 10%;">
+                            <div class="form-group">
+                                <h:outputLabel for="quesTitle" styleClass="control-label col-sm-4">Add Question Title</h:outputLabel>
+                                <div class="col-sm-4">
+                                    <h:inputText id="quesTitle" value="#{question.title}" styleClass="form-control" required="true" requiredMessage="Question Title required">
+                                    </h:inputText>
+                                </div>
+                                <h:message for="quesTitle" styleClass="text text-danger" />
+                            </div>
+                            <div class="form-group">
+                                <h:outputLabel for="decisionMode" styleClass="control-label col-sm-4">Select Decision Mode:</h:outputLabel>
+                                <div class="col-sm-4">
+                                    <h:selectOneMenu id="decisionMode" value="#{question.mode}" styleClass="form-control" style="max-height: 100px;">
+                                        <f:selectItems value="#{personBean.decisionMode}" var="mode" itemValue="#{mode}" itemLabel="#{mode}" />
+                                    </h:selectOneMenu>
+                                </div>
+                                <h:message for="decisionMode" styleClass="text text-danger" />
+                            </div>
+                            <div class="form-group">
+                                <h:outputLabel for="optionType" styleClass="control-label col-sm-4">Select Option Type:</h:outputLabel>
+                                <div class="col-sm-4">
+                                    <h:selectOneMenu id="optionType" value="#{question.optionType}" styleClass="form-control" style="max-height: 100px;">
+                                        <f:selectItems value="#{personBean.optionType}" var="mode" itemValue="#{mode}" itemLabel="#{mode}" />
+                                    </h:selectOneMenu>
+                                </div>
+                                <h:message for="optionType" styleClass="text text-danger" />
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2 col-sm-27" />
+                                <div class="col-sm-4">
+                                    <div class="col-sm-2" style="width: 50% !important">
+                                        <h:commandButton rendered="true" value="Add Options" action="#{personBean.addOptions(question)}" styleClass="btn btn-success btnWidth" style="width: 100% !important"></h:commandButton>
+                                    </div>
+                                    <div class="col-sm-1" />
+                                </div>
+                            </div>
+                            <ui:repeat value="#{question.options}" var="option">
+                                <div style="width: 80%; border: 1px solid lightblue; padding-top: 10px; padding-bottom: 10px; margin-top: 10px; margin-left: 10%;">
+                                    <div class="form-group">
+                                        <h:outputLabel for="optionTitle" styleClass="control-label col-sm-4">Add Option</h:outputLabel>
+                                        <div class="col-sm-4">
+                                            <h:inputText id="optionTitle" value="#{option.name}" styleClass="form-control" required="true" requiredMessage="Question Option required">
+                                            </h:inputText>
+                                        </div>
+                                        <h:message for="optionTitle" styleClass="text text-danger" />
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-2 col-sm-27" />
+                                        <div class="col-sm-4">
+                                            <div class="col-sm-2" style="width: 70% !important">
+                                                <h:commandButton rendered="#{question.options.size() > 2}" value="Delete Option" onclick="alert('This option will be deleted')" action="#{personBean.deleteOptions(question, option)}" styleClass="btn btn-danger btnWidth" style="width: 100% !important"/>
+                                            </div>
+                                            <div class="col-sm-1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </ui:repeat>
+                            <div class="form-group" style="padding-top: 10px;">
+                                <div class="col-sm-2 col-sm-27" />
+                                <div class="col-sm-4">
+                                    <div class="col-sm-2" style="width: 50% !important">
+                                        <h:commandButton rendered="#{personBean.questions.size() > 1}" value="Delete Question" action="#{personBean.deleteQuestion(question)}" styleClass="btn btn-danger btnWidth" style="width: 100% !important"></h:commandButton>
+                                    </div>
+                                    <div class="col-sm-1" />
+                                </div>
+                            </div>
+                        </div>
+                    </ui:repeat>
+                    <div class="form-group" style="padding-top: 10px;">
+                        <div class="col-sm-2 col-sm-27" />
+                        <div class="col-sm-4">
+                            <div class="col-sm-2" style="display: inline-block">
+                                <h:commandButton rendered="true" value="Save" action="#{personBean.addNewPollRecord}" styleClass="btn btn-success btnWidth" >
+                                </h:commandButton>
+                            </div>
+                            <div class="col-sm-1" style="display: inline-block"/>
+                            <div class="col-sm-updated" style="display: inline-block"><h:outputLink value="dashboard.xhtml">Cancel</h:outputLink></div>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
+
+    </h:body>
+</html>
